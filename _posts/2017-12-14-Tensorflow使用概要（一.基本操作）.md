@@ -1,6 +1,23 @@
 # 合抱之木，生于毫末；九层之台，起于累土
 
 这一篇主要介绍 tensorflow 的基本操作，包括基本的图、session、常量、变量、占位符等最基本的命令。
+### 主要内容：
+
+[TOC]
+
+# `Tensorflow` 创建模型的几个步骤 
+
+* 构建图：
+  * 准备数据
+  * 给输入和 labels 创建 placeholder 占位符
+  * 创建模型预测 Y
+  * 指定Loss 函数
+  * 创建优化器
+* 训练
+  * 初始化变量
+  * 运行 OP
+
+
 
 # 什么是TF
 
@@ -241,4 +258,132 @@ with g.control_dependencies([a, b, c]):
 
 
 #### 占位符和输入
+
+先申明，在后面用到的时候再赋值执行，一般可以用字典将值输入进去
+
+```python
+tf.placeholder(dtype, shape=None, name=None) # 将字典作为输入
+"""python
+x = tf.placeholder(tf.float32, shape=(1024, 1024))
+y = tf.matmul(x, x)
+
+with tf.Session() as sess:
+    print(sess.run(y))  # ERROR: will fail because x was not fed.
+    rand_array = np.random.rand(1024, 1024)
+    print(sess.run(y, feed_dict={x: rand_array}))  # 将字典作为输入 Will succeed.
+    # or
+    feed_dict={x: np.random.rand(1024, 1024)}
+    print(sess.run(y, feed_dict=feed_dict))  # 将字典作为输入 Will succeed.
+"""
+```
+
+#### 延迟加载
+
+懒加载，执行代码的时候再将图加载出来，循环多的时候，不建议用延迟加载。
+
+```python
+# ------------------ 正常加载 ----------------
+a = tf.constant(2,name='a')  # 定义常量,这里如果不定义name，图的定义中的变量名是随机的
+b = tf.constant(2,name='b')
+res_sum = tf.add(a,b) # 计算
+with tf.Session() as sess:
+    # 将一行添加到 Tensor board
+    writer = tf.summary.FileWriter('./graphs',sess.graph)
+    for i in range(10):
+        print(sess.run(res_sum))    # run 执行计算
+    writer.close()  # 关闭 writer
+# ------------------ 延迟加载 -----------------
+a = tf.constant(2,name='a')  # 定义常量,这里如果不定义name，图的定义中的变量名是随机的
+b = tf.constant(2,name='b')
+with tf.Session() as sess:
+    # 将一行添加到 Tensor board
+    writer = tf.summary.FileWriter('./graphs',sess.graph)
+    for i in range(10):
+        print(sess.run(tf.add(a,b)))    # run的时候定义add，再执行计算
+    writer.close()  # 关闭 writer
+'''
+可以答应一下图的定义，会发现，延迟加载会有很多 ADD 项，因为每次循环 sess.run 都会加载、定义一次 add(a+b)
+而正常加载，在定义之后，add 操作的结构就固定了，而sess.run 就只是执行这个图而已
+循环中，延迟加载会占用更多的资源
+'''
+```
+
+
+
+# 优化模型 
+
+#### 权重更新
+
+梯度下降、随机梯度下降、批量梯度下降
+
+```python
+
+tf.train.GradientDescentOptimizer()
+# e.g.
+optimizer = tf.train.GradientDescentOptimizer(learning_rate = learning_rate).minimize(cost)
+_ , c = sess.run([optimizer, cost], feed_dict={X: minibatch_X, Y: minibatch_Y})
+"""
+Optimizer that implements the gradient descent algorithm.
+实现梯度下降算法的优化器。
+"""
+
+tf.train.AdagradOptimizer()
+"""
+实现Adagrad算法的优化器。
+Optimizer that implements the Adagrad algorithm.
+See this [paper](http://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf)
+or this
+[intro](http://cs.stanford.edu/~ppasupat/a9online/uploads/proximal_notes.pdf).
+"""
+
+tf.train.MomentumOptimizer()
+"""
+实现了动量算法的优化器。
+Optimizer that implements the Momentum algorithm.
+Computes (if `use_nesterov = False`):
+​```
+accumulation = momentum * accumulation + gradient
+variable -= learning_rate * accumulation
+​```
+Note that in the dense version of this algorithm, `accumulation` is updated
+and applied regardless of a gradient's value, whereas the sparse version (when
+the gradient is an `IndexedSlices`, typically because of `tf.gather` or an
+embedding) only updates variable slices and corresponding `accumulation` terms
+when that part of the variable was used in the forward pass.
+"""
+
+tf.train.AdamOptimizer()
+# e.g.
+optimizer = tf.train.AdamOptimizer(learning_rate = learning_rate).minimize(cost)
+_ , minibatch_cost = sess.run([optimizer, cost], feed_dict={X: minibatch_X, Y: minibatch_Y})
+"""
+实现了亚当算法的优化器。
+Optimizer that implements the Adam algorithm.
+See [Kingma et al., 2014](http://arxiv.org/abs/1412.6980)
+([pdf](http://arxiv.org/pdf/1412.6980.pdf)).
+"""
+
+tf.train.ProximalGradientDescentOptimizer(optimizer.Optimizer)
+# pylint: disable=line-too-long
+"""
+Optimizer that implements the proximal gradient descent algorithm.
+See this [paper](http://papers.nips.cc/paper/3793-efficient-learning-using-forward-backward-splitting.pdf).
+"""
+
+tf.train.ProximalAdagradOptimizer(optimizer.Optimizer)
+# pylint: disable=line-too-long
+"""
+Optimizer that implements the Proximal Adagrad algorithm.
+See this [paper](http://papers.nips.cc/paper/3793-efficient-learning-using-forward-backward-splitting.pdf).
+"""
+
+tf.train.RMSPropOptimizer(optimizer.Optimizer)
+"""
+实现RMSProp算法的优化器。
+Optimizer that implements the RMSProp algorithm.
+See the [paper](http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf).
+"""
+```
+
+
 
