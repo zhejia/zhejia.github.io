@@ -1,5 +1,8 @@
-
 ## TensorFlow简单线性回归（预测房价）
+
+#####Tensorflow使用的简单示例
+
+数据集主要包括（x,y）两个维度的数据的简单线性回归
 
 
 ```python
@@ -57,7 +60,7 @@ b = tf.Variable(np.random.randn(), name="bias")
 predict = tf.add(tf.multiply(W,X),b)
 
 # cost为标准差
-# cost = tf.pow(tf.reduce_sum(predict-Y)/n_samples,2)
+# cost = tf.pow(tf.reduce_sum((predict-Y)**2)/n_samples,2)
 # cost 平方
 cost = tf.reduce_sum((predict-Y)**2)/n_samples
 
