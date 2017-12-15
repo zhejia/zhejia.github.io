@@ -23,7 +23,7 @@ train_Y = np.asarray([1.7, 2.76, 2.09, 3.19, 1.694, 1.573, 3.366, 2.596, 2.53, 1
 plt.plot(train_X,train_Y,'ro',label = 'Original data')
 ```
 
-![样本坐标](/2017-12-15-TensorFlowLinearRegression/output_2_1.png)
+![样本坐标](/img/2017-12-15-TensorFlowLinearRegression/output_2_1.png)
 
 
 
@@ -34,7 +34,7 @@ test_Y = np.asarray([1.84, 2.273, 3.2, 2.831, 2.92, 3.24, 1.35, 1.03])
 plt.plot(test_X,test_Y,'ro',label = 'data')
 ```
 
-![png](/2017-12-15-TensorFlowLinearRegression/output_3_1.png)
+![png](/img/2017-12-15-TensorFlowLinearRegression/output_3_1.png)
 
 
 
@@ -127,5 +127,5 @@ with tf.Session() as sess:
     Testing cost= 0.00219555
     Absolute mean square loss difference: 0.153158
 
-![png](/2017-12-15-TensorFlowLinearRegression/output_5_1.png)
+![png](/img/2017-12-15-TensorFlowLinearRegression/output_5_1.png)
 
