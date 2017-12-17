@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>Titanic</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Titanic2</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <style type="text/css">
@@ -11796,12 +11796,13 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
 <span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">math</span>
 </pre></div>
 
 </div>
@@ -11820,7 +11821,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">GetData</span><span class="p">:</span>
@@ -11853,10 +11854,13 @@ div#notebook {
         <span class="bp">self</span><span class="o">.</span><span class="n">train_original_X</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span>
             <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span><span class="s1">&#39;Sex&#39;</span><span class="p">,</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span><span class="s1">&#39;SibSp&#39;</span><span class="p">,</span><span class="s1">&#39;Parch&#39;</span><span class="p">,</span><span class="s1">&#39;Fare&#39;</span><span class="p">,</span><span class="s1">&#39;Cabin&#39;</span><span class="p">,</span><span class="s1">&#39;Embarked&#39;</span><span class="p">,</span>
         <span class="p">]]</span>
+
         <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;UnSurvived&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]]</span>
         <span class="n">train_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;UnSurvived&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">train_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;UnSurvived&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">train_original_Y</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span><span class="s1">&#39;UnSurvived&#39;</span><span class="p">]]</span>
+                
+        
         <span class="c1"># print(train_data.info())</span>
         <span class="c1"># print(self.train_original_X.info())</span>
         <span class="c1"># print(self.train_original_X.head(5))</span>
@@ -11890,11 +11894,16 @@ div#notebook {
             <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span><span class="s1">&#39;Sex&#39;</span><span class="p">,</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span><span class="s1">&#39;SibSp&#39;</span><span class="p">,</span><span class="s1">&#39;Parch&#39;</span><span class="p">,</span><span class="s1">&#39;Fare&#39;</span><span class="p">,</span><span class="s1">&#39;Cabin&#39;</span><span class="p">,</span><span class="s1">&#39;Embarked&#39;</span><span class="p">,</span>
         <span class="p">]]</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_original_XXX</span> <span class="o">=</span> <span class="n">test_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span>
+            <span class="s1">&#39;PassengerId&#39;</span><span class="p">,</span><span class="s1">&#39;Pclass&#39;</span><span class="p">,</span><span class="s1">&#39;Sex&#39;</span><span class="p">,</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span><span class="s1">&#39;SibSp&#39;</span><span class="p">,</span><span class="s1">&#39;Parch&#39;</span><span class="p">,</span><span class="s1">&#39;Fare&#39;</span><span class="p">,</span><span class="s1">&#39;Cabin&#39;</span><span class="p">,</span><span class="s1">&#39;Embarked&#39;</span><span class="p">,</span>
+        <span class="p">]]</span>
+
         <span class="n">test_data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;gender_submission.csv&#39;</span><span class="p">)</span>
         <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;UnSurvived&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">test_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]]</span>
         <span class="n">test_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;UnSurvived&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">test_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;UnSurvived&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">test_original_Y</span> <span class="o">=</span> <span class="n">test_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span><span class="s1">&#39;UnSurvived&#39;</span><span class="p">]]</span>
+                
         <span class="c1"># print(self.test_data.info())</span>
         <span class="c1"># print(self.test_original_X.info())</span>
         <span class="c1"># print(self.test_original_X.head(5))</span>
@@ -11977,7 +11986,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_parameters</span><span class="p">(</span><span class="n">nn_layer</span><span class="p">):</span>
@@ -12013,16 +12022,16 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">prediction</span><span class="p">(</span><span class="n">parameters</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">prediction</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span><span class="n">predict</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="c1"># 正向传播，预测</span>
-    <span class="c1"># A1 = tf.nn.relu(tf.matmul(parameters[&#39;X&#39;],parameters[&#39;W1&#39;])+parameters[&#39;b1&#39;])</span>
-    <span class="c1"># A2 = tf.nn.relu(tf.matmul(A1,parameters[&#39;W2&#39;])+parameters[&#39;b2&#39;])</span>
-    <span class="n">pred</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;W1&#39;</span><span class="p">])</span><span class="o">+</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;b1&#39;</span><span class="p">])</span>  <span class="c1"># sigmoid 预测</span>
-    <span class="c1"># print(&#39;----pred-----&#39;,np.shape(pred))</span>
-    <span class="k">return</span> <span class="n">pred</span>
+    <span class="n">A1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;W1&#39;</span><span class="p">])</span><span class="o">+</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;b1&#39;</span><span class="p">])</span>
+    <span class="n">A2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">A1</span><span class="p">,</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;W2&#39;</span><span class="p">])</span><span class="o">+</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;b2&#39;</span><span class="p">])</span>
+    <span class="n">ZF</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">A2</span><span class="p">,</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;W3&#39;</span><span class="p">])</span><span class="o">+</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;b3&#39;</span><span class="p">]</span>  <span class="c1"># 最后的一层激活函数在 cost 里集合了</span>
+    <span class="c1"># print(&#39;----pred-----&#39;,np.shape(ZF))</span>
+    <span class="k">return</span> <span class="n">ZF</span>
 
 <span class="k">def</span> <span class="nf">compute_cost</span><span class="p">(</span><span class="n">Yhat</span><span class="p">,</span><span class="n">Y</span><span class="p">):</span>
     <span class="c1"># 计算成本函数</span>
@@ -12040,21 +12049,76 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span><span class="n">training_epochs</span> <span class="o">=</span> <span class="mi">1500</span><span class="p">,</span><span class="n">print_step</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">random_mini_batches</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">mini_batch_size</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span> <span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>  
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    从别处 copy 的用于随机切分 mini_batche </span>
+<span class="sd">    </span>
+<span class="sd">    Creates a list of random minibatches from (X, Y)</span>
+<span class="sd">     </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">    X -- input data, of shape (input size, number of examples) (m, Hi, Wi, Ci)</span>
+<span class="sd">    Y -- true &quot;label&quot; vector (containing 0 if cat, 1 if non-cat), of shape (1, number of examples) (m, n_y)</span>
+<span class="sd">    mini_batch_size - size of the mini-batches, integer</span>
+<span class="sd">    seed -- this is only for the purpose of grading, so that you&#39;re &quot;random minibatches are the same as ours.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    mini_batches -- list of synchronous (mini_batch_X, mini_batch_Y)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">m</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>                  <span class="c1"># number of training examples</span>
+    <span class="n">mini_batches</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    
+    <span class="c1"># Step 1: Shuffle (X, Y)</span>
+    <span class="n">permutation</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+    <span class="n">shuffled_X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">permutation</span><span class="p">,:]</span>
+    <span class="n">shuffled_Y</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="n">permutation</span><span class="p">,:]</span>
+
+    <span class="c1"># Step 2: Partition (shuffled_X, shuffled_Y). Minus the end case.</span>
+    <span class="n">num_complete_minibatches</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">m</span><span class="o">/</span><span class="n">mini_batch_size</span><span class="p">)</span> <span class="c1"># number of mini batches of size mini_batch_size in your partitionning</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_complete_minibatches</span><span class="p">):</span>
+        <span class="n">mini_batch_X</span> <span class="o">=</span> <span class="n">shuffled_X</span><span class="p">[</span><span class="n">k</span> <span class="o">*</span> <span class="n">mini_batch_size</span> <span class="p">:</span> <span class="n">k</span> <span class="o">*</span> <span class="n">mini_batch_size</span> <span class="o">+</span> <span class="n">mini_batch_size</span><span class="p">,:]</span>
+        <span class="n">mini_batch_Y</span> <span class="o">=</span> <span class="n">shuffled_Y</span><span class="p">[</span><span class="n">k</span> <span class="o">*</span> <span class="n">mini_batch_size</span> <span class="p">:</span> <span class="n">k</span> <span class="o">*</span> <span class="n">mini_batch_size</span> <span class="o">+</span> <span class="n">mini_batch_size</span><span class="p">,:]</span>
+        <span class="n">mini_batch</span> <span class="o">=</span> <span class="p">(</span><span class="n">mini_batch_X</span><span class="p">,</span> <span class="n">mini_batch_Y</span><span class="p">)</span>
+        <span class="n">mini_batches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mini_batch</span><span class="p">)</span>
+    
+    <span class="c1"># Handling the end case (last mini-batch &lt; mini_batch_size)</span>
+    <span class="k">if</span> <span class="n">m</span> <span class="o">%</span> <span class="n">mini_batch_size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">mini_batch_X</span> <span class="o">=</span> <span class="n">shuffled_X</span><span class="p">[</span><span class="n">num_complete_minibatches</span> <span class="o">*</span> <span class="n">mini_batch_size</span> <span class="p">:</span> <span class="n">m</span><span class="p">,:]</span>
+        <span class="n">mini_batch_Y</span> <span class="o">=</span> <span class="n">shuffled_Y</span><span class="p">[</span><span class="n">num_complete_minibatches</span> <span class="o">*</span> <span class="n">mini_batch_size</span> <span class="p">:</span> <span class="n">m</span><span class="p">,:]</span>
+        <span class="n">mini_batch</span> <span class="o">=</span> <span class="p">(</span><span class="n">mini_batch_X</span><span class="p">,</span> <span class="n">mini_batch_Y</span><span class="p">)</span>
+        <span class="n">mini_batches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mini_batch</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">mini_batches</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span><span class="n">training_epochs</span> <span class="o">=</span> <span class="mi">1500</span><span class="p">,</span><span class="n">print_step</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">minibatch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">):</span>
     <span class="c1"># 整合各个步骤的执行函数</span>
     <span class="c1"># 执行训练</span>
     <span class="c1"># 准备阶段</span>
+    
+    <span class="n">seed</span> <span class="o">=</span> <span class="mi">3</span>
+    
     <span class="n">train_X</span><span class="p">,</span><span class="n">dev_X</span><span class="p">,</span><span class="n">train_Y</span><span class="p">,</span><span class="n">dev_Y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sk_data</span><span class="p">()</span>
     <span class="n">test_X</span><span class="p">,</span><span class="n">test_Y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">test_data</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;main------&#39;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">train_X</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">train_Y</span><span class="p">))</span>
-
+    
     <span class="n">nn_layer</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;X&#39;</span><span class="p">:(</span><span class="kc">None</span><span class="p">,</span><span class="n">train_X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="s1">&#39;Y&#39;</span><span class="p">:(</span><span class="kc">None</span><span class="p">,</span><span class="n">train_Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>    <span class="c1"># 神经元结构</span>
-                <span class="s1">&#39;W1&#39;</span><span class="p">:(</span><span class="n">train_X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">2</span><span class="p">),</span><span class="s1">&#39;b1&#39;</span><span class="p">:(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
-                <span class="c1"># &#39;W2&#39;:(8,2),&#39;b2&#39;:(1,2),</span>
-                <span class="c1"># &#39;W3&#39;:(4,2),&#39;b3&#39;:(1,2),</span>
+                <span class="s1">&#39;W1&#39;</span><span class="p">:(</span><span class="n">train_X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">40</span><span class="p">),</span><span class="s1">&#39;b1&#39;</span><span class="p">:(</span><span class="mi">1</span><span class="p">,</span><span class="mi">40</span><span class="p">),</span>
+                <span class="s1">&#39;W2&#39;</span><span class="p">:(</span><span class="mi">40</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span><span class="s1">&#39;b2&#39;</span><span class="p">:(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span>
+                <span class="s1">&#39;W3&#39;</span><span class="p">:(</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="s1">&#39;b3&#39;</span><span class="p">:(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
                <span class="p">}</span>
 
     <span class="n">parameters</span> <span class="o">=</span> <span class="n">create_parameters</span><span class="p">(</span><span class="n">nn_layer</span><span class="p">)</span>
@@ -12063,8 +12127,13 @@ div#notebook {
     
     <span class="n">pred</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
     <span class="n">cost</span> <span class="o">=</span> <span class="n">compute_cost</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span><span class="n">Y</span><span class="p">)</span>
-    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>
-
+    
+    <span class="c1">#--------------学习速率的设置（学习速率呈指数下降）--------------------- #将 global_step/decay_steps 强制转换为整数  </span>
+    <span class="n">global_step</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  
+    <span class="n">decay_learning_rate</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">exponential_decay</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">,</span><span class="n">global_step</span><span class="p">,</span><span class="n">decay_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">decay_rate</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span><span class="n">staircase</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>      
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">decay_learning_rate</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span><span class="n">global_step</span><span class="o">=</span><span class="n">global_step</span><span class="p">)</span>
+    
+    
     <span class="n">cost_list</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="n">init</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
@@ -12072,12 +12141,23 @@ div#notebook {
         <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">training_epochs</span><span class="p">):</span>
-            <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span><span class="n">train_X</span><span class="p">,</span> <span class="n">Y</span><span class="p">:</span> <span class="n">train_Y</span><span class="p">}</span>
-            <span class="n">_</span> <span class="p">,</span> <span class="n">epoch_cost</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">cost</span><span class="p">],</span> <span class="n">feed_dict</span><span class="o">=</span><span class="n">feed_dict</span><span class="p">)</span>
+            <span class="n">minibatch_cost</span> <span class="o">=</span> <span class="mf">0.</span>
+            <span class="n">num_minibatches</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">train_X</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">minibatch_size</span><span class="p">)</span>
+            <span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">minibatches</span> <span class="o">=</span> <span class="n">random_mini_batches</span><span class="p">(</span><span class="n">train_X</span><span class="p">,</span> <span class="n">train_Y</span><span class="p">,</span> <span class="n">minibatch_size</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
+            
+            <span class="k">for</span> <span class="n">minibatch</span> <span class="ow">in</span> <span class="n">minibatches</span><span class="p">:</span>
+                <span class="n">minibatch_X</span><span class="p">,</span> <span class="n">minibatch_Y</span> <span class="o">=</span> <span class="n">minibatch</span>                
+                <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span><span class="n">minibatch_X</span><span class="p">,</span> <span class="n">Y</span><span class="p">:</span> <span class="n">minibatch_Y</span><span class="p">}</span>
+                <span class="n">_</span> <span class="p">,</span> <span class="n">temp_cost</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">cost</span><span class="p">],</span> <span class="n">feed_dict</span><span class="o">=</span><span class="n">feed_dict</span><span class="p">)</span>
+                
+                <span class="n">minibatch_cost</span> <span class="o">+=</span> <span class="n">temp_cost</span> <span class="o">/</span> <span class="n">num_minibatches</span>
+            
+            
 
             <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span><span class="k">print_step</span>==0:
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Epoch:&#39;</span><span class="p">,</span><span class="n">epoch</span><span class="p">,</span><span class="s1">&#39;cost:&#39;</span><span class="p">,</span><span class="n">epoch_cost</span><span class="p">)</span>
-                <span class="n">cost_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epoch_cost</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Epoch:&#39;</span><span class="p">,</span><span class="n">epoch</span><span class="p">,</span><span class="s1">&#39;cost:&#39;</span><span class="p">,</span><span class="n">minibatch_cost</span><span class="p">)</span>
+                <span class="n">cost_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">minibatch_cost</span><span class="p">)</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;训练完毕!&quot;</span><span class="p">)</span>
 
@@ -12088,13 +12168,10 @@ div#notebook {
         <span class="n">correct_prediction</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
         <span class="c1"># Calculate accuracy on the test set</span>
         <span class="n">accuracy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">correct_prediction</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">accuracy</span><span class="p">)</span>
         <span class="n">train_accuracy</span> <span class="o">=</span> <span class="n">accuracy</span><span class="o">.</span><span class="n">eval</span><span class="p">({</span><span class="n">X</span><span class="p">:</span> <span class="n">train_X</span><span class="p">,</span> <span class="n">Y</span><span class="p">:</span> <span class="n">train_Y</span><span class="p">})</span>
         <span class="n">dev_accuracy</span> <span class="o">=</span> <span class="n">accuracy</span><span class="o">.</span><span class="n">eval</span><span class="p">({</span><span class="n">X</span><span class="p">:</span> <span class="n">dev_X</span><span class="p">,</span> <span class="n">Y</span><span class="p">:</span> <span class="n">dev_Y</span><span class="p">})</span>
-        <span class="n">test_accuracy</span> <span class="o">=</span> <span class="n">accuracy</span><span class="o">.</span><span class="n">eval</span><span class="p">({</span><span class="n">X</span><span class="p">:</span> <span class="n">test_X</span><span class="p">,</span> <span class="n">Y</span><span class="p">:</span> <span class="n">test_Y</span><span class="p">})</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Train Accuracy:&quot;</span><span class="p">,</span> <span class="n">train_accuracy</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;dev Accuracy:&quot;</span><span class="p">,</span> <span class="n">dev_accuracy</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;test Accuracy:&quot;</span><span class="p">,</span> <span class="n">test_accuracy</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;+++++++++++++++++++++++++++++++++&#39;</span><span class="p">)</span>
         <span class="c1"># cost图</span>
         <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -12103,6 +12180,22 @@ div#notebook {
         <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;iterations (per tens)&#39;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Learning rate =&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">))</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        
+        <span class="n">pred_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">test_original_XXX</span>
+        <span class="n">pred_data</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span>
+        <span class="c1"># pred = prediction(re_parameters,predict=True)</span>
+        
+        <span class="c1"># 保存预测结果</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">417</span><span class="p">):</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">pred_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,[</span><span class="s1">&#39;Pclass&#39;</span><span class="p">,</span><span class="s1">&#39;Sex&#39;</span><span class="p">,</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span><span class="s1">&#39;SibSp&#39;</span><span class="p">,</span><span class="s1">&#39;Parch&#39;</span><span class="p">,</span><span class="s1">&#39;Fare&#39;</span><span class="p">,</span><span class="s1">&#39;Cabin&#39;</span><span class="p">,</span><span class="s1">&#39;Embarked&#39;</span><span class="p">,]]</span>
+            <span class="n">inputX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">(),[</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">])</span>
+            <span class="n">pred_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,]]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">eval</span><span class="p">({</span><span class="n">X</span><span class="p">:</span><span class="n">inputX</span><span class="p">})</span>
+            
+        <span class="n">save</span><span class="o">=</span><span class="n">pred_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span><span class="s1">&#39;PassengerId&#39;</span><span class="p">,</span><span class="s1">&#39;Survived&#39;</span><span class="p">,]]</span>
+        <span class="n">save</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;b.csv&#39;</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        
+        
+        <span class="k">return</span> <span class="n">parameters</span>
 </pre></div>
 
 </div>
@@ -12112,12 +12205,12 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 模型搭建完毕，看看结果吧</span>
 <span class="n">data</span><span class="o">=</span><span class="n">GetData</span><span class="p">()</span>
-<span class="n">re_parameters</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">re_parameters</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span><span class="n">training_epochs</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">,</span><span class="n">print_step</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12134,42 +12227,29 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>main------ (712, 8) (712, 2)
-Epoch: 0 cost: 0.675887
-Epoch: 50 cost: 0.543618
-Epoch: 100 cost: 0.523371
-Epoch: 150 cost: 0.512893
-Epoch: 200 cost: 0.507532
-Epoch: 250 cost: 0.504104
-Epoch: 300 cost: 0.501674
-Epoch: 350 cost: 0.499834
-Epoch: 400 cost: 0.49838
-Epoch: 450 cost: 0.497194
-Epoch: 500 cost: 0.496204
-Epoch: 550 cost: 0.495361
-Epoch: 600 cost: 0.494632
-Epoch: 650 cost: 0.493994
-Epoch: 700 cost: 0.493427
-Epoch: 750 cost: 0.492926
-Epoch: 800 cost: 0.492482
-Epoch: 850 cost: 0.492048
-Epoch: 900 cost: 0.491697
-Epoch: 950 cost: 0.491318
-Epoch: 1000 cost: 0.491035
-Epoch: 1050 cost: 0.49072
-Epoch: 1100 cost: 0.490429
-Epoch: 1150 cost: 0.490164
-Epoch: 1200 cost: 0.489936
-Epoch: 1250 cost: 0.489695
-Epoch: 1300 cost: 0.489489
-Epoch: 1350 cost: 0.489284
-Epoch: 1400 cost: 0.489093
-Epoch: 1450 cost: 0.488913
+<pre>Epoch: 0 cost: 1.17597677708
+Epoch: 100 cost: 0.466950964928
+Epoch: 200 cost: 0.428424298763
+Epoch: 300 cost: 0.386092627048
+Epoch: 400 cost: 0.38570176363
+Epoch: 500 cost: 0.359707412124
+Epoch: 600 cost: 0.35595690608
+Epoch: 700 cost: 0.334684097767
+Epoch: 800 cost: 0.304545798898
+Epoch: 900 cost: 0.302001422644
+Epoch: 1000 cost: 0.300080001354
+Epoch: 1100 cost: 0.29775622189
+Epoch: 1200 cost: 0.272779041529
+Epoch: 1300 cost: 0.276083418727
+Epoch: 1400 cost: 0.269334992766
+Epoch: 1500 cost: 0.265401047468
+Epoch: 1600 cost: 0.252157711983
+Epoch: 1700 cost: 0.258447703719
+Epoch: 1800 cost: 0.244996145368
+Epoch: 1900 cost: 0.251095372438
 训练完毕!
-Tensor(&#34;Mean_1:0&#34;, shape=(), dtype=float32)
-Train Accuracy: 0.820225
-dev Accuracy: 0.815642
-test Accuracy: 0.923445
+Train Accuracy: 0.924157
+dev Accuracy: 0.832402
 +++++++++++++++++++++++++++++++++
 </pre>
 </div>
@@ -12183,210 +12263,185 @@ test Accuracy: 0.923445
 
 
 <div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
+<img src="data:image/png;base64,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
+SUVORK5CYII=
 "
 >
 </div>
@@ -12403,12 +12458,10 @@ mZlVxEFiZmYVcZCYmVlFHCRmZlaR/w9LwFnngU66EwAAAABJRU5ErkJggg==
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="&#23436;&#32467;&#25746;&#33457;">&#23436;&#32467;&#25746;&#33457;<a class="anchor-link" href="#&#23436;&#32467;&#25746;&#33457;">&#182;</a></h2><p>看起来结果还行</p>
 <ul>
-<li>Train Accuracy: 0.820225</li>
-<li>dev Accuracy: 0.815642</li>
-<li>test Accuracy: 0.923445</li>
+<li>Train Accuracy: 0.924157</li>
+<li>dev Accuracy: 0.832402</li>
 </ul>
-<p>训练集、开发集准确率稳定在 82% 左右，而测试集意外的达到了 92% 。</p>
-<p>这个模型就是简单的单层网络，其实我还尝试了两层、三层的神经网络，但是虽然训练集、开发集准确率有所上升，但是测试集表现不佳，最低到了 79%，所以就又回到了最初的单层网络</p>
+<p>这个模型就是虽然在训练集、开发集上表现还行，但是测试集上表现要打一定的折扣，上传Kaggle之后，大概只有77%左右准确率，不过就是用来练手的，整个过程从处理数据，到最后的调整参数，整个过程还算完整。</p>
 
 </div>
 </div>
